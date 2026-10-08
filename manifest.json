@@ -1,0 +1,9 @@
+{
+  "name": "Cruise Packer",
+  "short_name": "Cruise Packer",
+  "start_url": "./index.html",
+  "display": "standalone",
+  "background_color": "#f4f7fa",
+  "theme_color": "#102a43",
+  "icons": []
+}
