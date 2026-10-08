@@ -39,14 +39,6 @@ label{font-size:12px;font-weight:800;display:block;margin:10px 0 5px;text-transf
 .sectionhead{display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px}.sectionhead h2{margin:0}
 .outfit-card{border:1px solid var(--line);border-radius:16px;padding:12px;margin-top:9px;background:#fff}.outfit-photos{display:flex;gap:7px;margin-bottom:9px}.outfit-photos .thumb{width:72px;height:72px}
 .searchbox{position:relative}.searchbox input{padding-left:36px}.searchbox:before{content:"⌕";position:absolute;left:13px;top:8px;font-size:20px;color:#8193a5;z-index:1}
-
-/* Visual Outfit Builder Grids inside Modal */
-.builder-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:6px;max-height:160px;overflow-y:auto;padding:4px;border:1px solid var(--line);border-radius:12px;background:#f8fafc}
-.builder-item{border:2px solid var(--line);border-radius:10px;padding:6px;text-align:center;cursor:pointer;background:#fff;position:relative}
-.builder-item.selected{border-color:var(--blue);background:var(--sky)}
-.builder-item img{width:100%;height:50px;object-fit:cover;border-radius:6px;background:#e9eff4;margin-bottom:4px}
-.builder-item span{font-size:10px;display:block;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-
 @media(min-width:650px){body{padding-bottom:20px}.bottom{position:static;max-width:820px;margin:0 auto 18px;background:transparent;border:0;box-shadow:none;padding:0;display:flex}.bottom button{flex:none}.grid{grid-template-columns:repeat(4,1fr)}}
 </style>
 </head>
@@ -76,8 +68,6 @@ let state=JSON.parse(localStorage.getItem(KEY)||"null")||{
  items:[], outfits:[], other:[]
 };
 let tab="outfits"; let filters={outfits:"",items:"",other:""};
-let draftOutfit={top:"",bottom:"",dress:"",shoes:""};
-
 function save(){localStorage.setItem(KEY,JSON.stringify(state));render()}
 function esc(s=""){return s.replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#039;"}[c]))}
 function packedCount(){let a=[...state.items,...state.other]; let total=a.length+state.outfits.length; let packed=a.filter(x=>x.packed).length+state.outfits.filter(x=>x.packed).length;return {packed,total,pct:total?Math.round(packed/total*100):0}}
@@ -109,9 +99,9 @@ function outfitsView(){
   if(!list.length) continue;
   html+=`<div class="card"><h3>${g}</h3>`;
   list.forEach(o=>{
-   let top=state.items.find(x=>x.id===o.top), bottom=state.items.find(x=>x.id===o.bottom), dress=state.items.find(x=>x.id===o.dress), shoes=state.items.find(x=>x.id===o.shoes);
-   html+=`<div class="outfit-card"><div class="outfit-photos">${img(top?.photo||dress?.photo)}${img(bottom?.photo)}${img(shoes?.photo)}</div>
-   <div class="row"><div class="itemmain"><b>${esc(o.name)}</b><small>${[top?.name||dress?.name,bottom?.name,shoes?.name].filter(Boolean).join(" • ")||"No pieces selected"}</small><br><span class="badge ${o.packed?"":"off"}">${o.packed?"Packed":"Not packed"}</span></div>
+   let top=state.items.find(x=>x.id===o.top), bottom=state.items.find(x=>x.id===o.bottom), shoes=state.items.find(x=>x.id===o.shoes);
+   html+=`<div class="outfit-card"><div class="outfit-photos">${img(top?.photo)}${img(bottom?.photo)}${img(shoes?.photo)}</div>
+   <div class="row"><div class="itemmain"><b>${esc(o.name)}</b><small>${[top?.name,bottom?.name,shoes?.name].filter(Boolean).join(" • ")||"No pieces selected"}</small><br><span class="badge ${o.packed?"":"off"}">${o.packed?"Packed":"Not packed"}</span></div>
    <input class="check" type="checkbox" ${o.packed?"checked":""} onchange="togglePacked('outfits','${o.id}',this.checked)">
    <button class="small secondary" onclick="editOutfit('${o.id}')">Edit</button></div></div>`;
   }); html+=`</div>`;
@@ -157,7 +147,7 @@ function exportView(){
 }
 function makeList(){
  let s=`${state.trip.name}\n${state.trip.dates}\n\nCRUISE PACKING LIST\n====================\n`;
- ["Day outfit","Ashore","Dinner","Dress up"].forEach(g=>{s+=`\n${g.toUpperCase()}\n`;state.outfits.filter(o=>o.occasion===g).forEach(o=>{let top=state.items.find(x=>x.id===o.top),bot=state.items.find(x=>x.id===o.bottom),dress=state.items.find(x=>x.id===o.dress),sh=state.items.find(x=>x.id===o.shoes);s+=`${o.packed?"☑":"☐"} ${o.name}${top?` — ${top.name}`:""}${dress?` — ${dress.name}`:""}${bot?` + ${bot.name}`:""}${sh?` + ${sh.name}`:""}\n`})});
+ ["Day outfit","Ashore","Dinner","Dress up"].forEach(g=>{s+=`\n${g.toUpperCase()}\n`;state.outfits.filter(o=>o.occasion===g).forEach(o=>{let top=state.items.find(x=>x.id===o.top),bot=state.items.find(x=>x.id===o.bottom),sh=state.items.find(x=>x.id===o.shoes);s+=`${o.packed?"☑":"☐"} ${o.name}${top?` — ${top.name}`:""}${bot?` + ${bot.name}`:""}${sh?` + ${sh.name}`:""}\n`})});
  s+="\nCLOTHING / SHOES\n";state.items.forEach(i=>s+=`${i.packed?"☑":"☐"} ${i.name} (${i.category})\n`);
  s+="\nOTHER\n";state.other.forEach(i=>s+=`${i.packed?"☑":"☐"} ${i.name} — Qty ${i.qty} (${i.type})\n`);
  return s;
@@ -174,60 +164,12 @@ function photoInput(existing=""){return `<label>Photo</label><input id="photo" t
 function openItem(id=null){let i=id?state.items.find(x=>x.id===id):{name:"",category:"Top",photo:"",packed:false};openModal(`<h2>${id?"Edit":"Add"} clothing</h2><label>Name</label><input id="iname" value="${esc(i.name)}" placeholder="e.g. Blue polo"><label>Category</label><select id="icat">${["Top","Bottom","Dress","Shorts","Jacket","Shoes","Other"].map(x=>`<option ${x===i.category?"selected":""}>${x}</option>`).join("")}</select>${photoInput(i.photo)}<div class="row" style="margin-top:15px"><button onclick="saveItem('${id||""}')">Save</button>${id?`<button class="danger" onclick="deleteItem('${id}')">Delete</button>`:""}<button class="secondary" onclick="closeModal()">Cancel</button></div>`)}
 function editItem(id){openItem(id)}
 function saveItem(id){let file=document.getElementById("photo").files[0];let finish=photo=>{let x=id?state.items.find(x=>x.id===id):{id:uid(),packed:false};x.name=document.getElementById("iname").value||"Unnamed item";x.category=document.getElementById("icat").value;if(photo!==undefined)x.photo=photo;if(!id)state.items.push(x);save();closeModal()};if(file){let r=new FileReader();r.onload=()=>finish(r.result);r.readAsDataURL(file)}else finish(undefined)}
-function deleteItem(id){state.items=state.items.filter(x=>x.id!==id);state.outfits.forEach(o=>{if(o.top===id)o.top="";if(o.bottom===id)o.bottom="";if(o.dress===id)o.dress="";if(o.shoes===id)o.shoes=""});save();closeModal()}
-
-// Visual Builder Functions
-function selectBuilderItem(category, id){
- draftOutfit[category] = draftOutfit[category] === id ? "" : id;
- updateBuilderUI();
-}
-
-function updateBuilderUI(){
- const renderGrid=(cat, containerId)=>{
-  let items=state.items.filter(i=>i.category===cat);
-  if(!items.length) { document.getElementById(containerId).innerHTML=`<div class="muted" style="grid-column:span 3;text-align:center;padding:10px;">No ${cat.toLowerCase()}s in wardrobe</div>`; return; }
-  document.getElementById(containerId).innerHTML=items.map(i=>`
-   <div class="builder-item ${draftOutfit[cat.toLowerCase()||cat]===i.id?'selected':''}" onclick="selectBuilderItem('${cat.toLowerCase()||cat}','${i.id}')">
-    ${img(i.photo)}
-    <span>${esc(i.name)}</span>
-   </div>
-  `).join('');
- };
- renderGrid('Top', 'builder-top-grid');
- renderGrid('Bottom', 'builder-bottom-grid');
- renderGrid('Dress', 'builder-dress-grid');
- renderGrid('Shoes', 'builder-shoes-grid');
-}
-
-function openOutfit(id=null){
- let o=id?state.outfits.find(x=>x.id===id):{name:"",occasion:"Day outfit",top:"",bottom:"",dress:"",shoes:"",packed:false};
- draftOutfit={top:o.top,bottom:o.bottom,dress:o.dress,shoes:o.shoes};
- openModal(`<h2>${id?"Edit":"Add"} outfit</h2>
- <label>Outfit name</label><input id="oname" value="${esc(o.name)}" placeholder="e.g. Port Vila casual">
- <label>Occasion</label><select id="oocc">${["Day outfit","Ashore","Dinner","Dress up"].map(x=>`<option ${x===o.occasion?"selected":""}>${x}</option>`).join("")}</select>
- 
- <label>Tap Top</label><div id="builder-top-grid" class="builder-grid"></div>
- <label>Tap Bottom</label><div id="builder-bottom-grid" class="builder-grid"></div>
- <label>Tap Dress (Alternative to Top/Bottom)</label><div id="builder-dress-grid" class="builder-grid"></div>
- <label>Tap Shoes</label><div id="builder-shoes-grid" class="builder-grid"></div>
-
- <div class="row" style="margin-top:15px"><button onclick="saveOutfit('${id||""}')">Save</button>${id?`<button class="danger" onclick="deleteOutfit('${id}')">Delete</button>`:""}<button class="secondary" onclick="closeModal()">Cancel</button></div>`);
- updateBuilderUI();
-}
+function deleteItem(id){state.items=state.items.filter(x=>x.id!==id);state.outfits.forEach(o=>{if(o.top===id)o.top="";if(o.bottom===id)o.bottom="";if(o.shoes===id)o.shoes=""});save();closeModal()}
+function selectOptions(category,selected){return `<option value="">— None —</option>`+state.items.filter(i=>i.category===category).map(i=>`<option value="${i.id}" ${i.id===selected?"selected":""}>${esc(i.name)}</option>`).join("")}
+function openOutfit(id=null){let o=id?state.outfits.find(x=>x.id===id):{name:"",occasion:"Day outfit",top:"",bottom:"",shoes:"",packed:false};openModal(`<h2>${id?"Edit":"Add"} outfit</h2><label>Outfit name</label><input id="oname" value="${esc(o.name)}" placeholder="e.g. Port Vila casual"><label>Occasion</label><select id="oocc">${["Day outfit","Ashore","Dinner","Dress up"].map(x=>`<option ${x===o.occasion?"selected":""}>${x}</option>`).join("")}</select><label>Top</label><select id="otop">${selectOptions("Top",o.top)}</select><label>Bottom</label><select id="obot">${selectOptions("Bottom",o.bottom)}</select><label>Dress</label><select id="odress"><option value="">— None —</option>${state.items.filter(i=>i.category==="Dress").map(i=>`<option value="${i.id}" ${i.id===o.dress?"selected":""}>${esc(i.name)}</option>`).join("")}</select><label>Shoes</label><select id="oshoes">${selectOptions("Shoes",o.shoes)}</select><div class="row" style="margin-top:15px"><button onclick="saveOutfit('${id||""}')">Save</button>${id?`<button class="danger" onclick="deleteOutfit('${id}')">Delete</button>`:""}<button class="secondary" onclick="closeModal()">Cancel</button></div>`)}
 function editOutfit(id){openOutfit(id)}
-function saveOutfit(id){
- let x=id?state.outfits.find(x=>x.id===id):{id:uid(),packed:false};
- x.name=document.getElementById("oname").value||"Unnamed outfit";
- x.occasion=document.getElementById("oocc").value;
- x.top=draftOutfit.top;
- x.bottom=draftOutfit.bottom;
- x.dress=draftOutfit.dress;
- x.shoes=draftOutfit.shoes;
- if(!id)state.outfits.push(x);
- save();closeModal();
-}
+function saveOutfit(id){let x=id?state.outfits.find(x=>x.id===id):{id:uid(),packed:false};x.name=document.getElementById("oname").value||"Unnamed outfit";x.occasion=document.getElementById("oocc").value;x.top=document.getElementById("otop").value;x.bottom=document.getElementById("obot").value;x.shoes=document.getElementById("oshoes").value;x.dress=document.getElementById("odress").value;if(!id)state.outfits.push(x);save();closeModal()}
 function deleteOutfit(id){state.outfits=state.outfits.filter(x=>x.id!==id);save();closeModal()}
-
 function openOther(id=null){let i=id?state.other.find(x=>x.id===id):{name:"",type:"Other",qty:1,packed:false};openModal(`<h2>${id?"Edit":"Add"} item</h2><label>Name</label><input id="rname" value="${esc(i.name)}" placeholder="e.g. Toothbrush"><label>Type</label><select id="rtype">${["Underwear","Toiletries","Documents","Electronics","Swimwear","Other"].map(x=>`<option ${x===i.type?"selected":""}>${x}</option>`).join("")}</select><label>Quantity</label><input id="rqty" type="number" min="1" value="${i.qty}"><div class="row" style="margin-top:15px"><button onclick="saveOther('${id||""}')">Save</button>${id?`<button class="danger" onclick="deleteOther('${id}')">Delete</button>`:""}<button class="secondary" onclick="closeModal()">Cancel</button></div>`)}
 function editOther(id){openOther(id)}
 function saveOther(id){let x=id?state.other.find(x=>x.id===id):{id:uid(),packed:false};x.name=document.getElementById("rname").value||"Unnamed item";x.type=document.getElementById("rtype").value;x.qty=Math.max(1,Number(document.getElementById("rqty").value)||1);if(!id)state.other.push(x);save();closeModal()}
