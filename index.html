@@ -9,10 +9,68 @@ function card(o){let d=it(o.dress),p=d?[d,null,it(o.shoes)]:[it(o.top),it(o.bott
 function wardrobe(){let cats=['All','Top','Bottom','Dress','Shorts','Jacket','Shoes'],a=data.items.filter(x=>(st.cat==='All'||x.category===st.cat)&&x.name.toLowerCase().includes(st.q.toLowerCase()));return `<div class="headrow"><h2>Your wardrobe</h2><button class="btn primary" onclick="addItem()">＋ Add</button></div><div class="help"><strong>Photo tip</strong>Take photos against a plain background in good light. This makes outfit combinations easier to scan.</div><input class="search" placeholder="Search clothing…" value="${esc(st.q)}" oninput="st.q=this.value;render()"><div class="filters">${cats.map(c=>`<button class="filter ${st.cat===c?'active':''}" onclick="st.cat='${c}';render()">${c}</button>`).join('')}</div>${a.length?`<div class="grid">${a.map(x=>`<article class="item"><div class="photo">${pic(x,x.category==='Shoes'?'👟':x.category==='Dress'?'👗':['Bottom','Shorts'].includes(x.category)?'👖':'👕')}</div><div class="body"><div class="name">${esc(x.name)}</div><div class="muted">${esc(x.category)}</div><span class="badge ${x.packed?'done':''}">${x.packed?'✓ Packed':'Not packed'}</span><div class="actions"><button class="btn secondary" onclick="addItem('${x.id}')">Edit</button><button class="btn secondary" style="flex:1" onclick="toggleItem('${x.id}')">${x.packed?'Unpack':'Mark packed'}</button><button class="btn danger" onclick="delItem('${x.id}')">×</button></div></div></article>`).join('')}</div>`:`<div class="empty"><h3>No matching clothing</h3><p>Try another filter or add a wardrobe item.</p><button class="btn primary" onclick="addItem()">＋ Add clothing</button></div>`}`}
 function other(){let cats=['All','Underwear','Toiletries','Documents','Electronics','Swimwear','Other'],a=data.other.filter(x=>(st.oc==='All'||x.category===st.oc)&&x.name.toLowerCase().includes(st.oq.toLowerCase()));return `<div class="headrow"><h2>Essentials checklist</h2><button class="btn primary" onclick="addOther()">＋ Add item</button></div><p class="hint">Underwear, toiletries, documents, electronics and everything beyond outfits.</p><input class="search" placeholder="Search essentials…" value="${esc(st.oq)}" oninput="st.oq=this.value;render()"><div class="filters">${cats.map(c=>`<button class="filter ${st.oc===c?'active':''}" onclick="st.oc='${c}';render()">${c}</button>`).join('')}</div>${a.length?`<div class="grid">${a.map(x=>`<div class="panel"><div class="row between"><div><div class="name">${esc(x.name)}</div><div class="muted">${esc(x.category)} · Qty ${x.qty||1}</div><span class="badge ${x.packed?'done':''}">${x.packed?'✓ Packed':'Not packed'}</span></div><button class="btn ${x.packed?'primary':'secondary'}" onclick="toggleOther('${x.id}')">${x.packed?'✓':'Pack'}</button></div><div class="actions"><button class="btn danger" onclick="delOther('${x.id}')">Remove</button></div></div>`).join('')}</div>`:`<div class="empty"><div style="font-size:34px">🪥</div><h3>Your checklist starts here</h3><p>Add essentials so nothing gets forgotten.</p><button class="btn primary" onclick="addOther()">＋ Add an essential</button></div>`}`}
 function exports(){let t=data.items.length+data.other.length,p=data.items.filter(x=>x.packed).length+data.other.filter(x=>x.packed).length,n=t?Math.round(p/t*100):0;return `<div class="headrow"><h2>Export & progress</h2></div><div class="panel"><div class="row between"><b>Packing checklist</b><b>${n}%</b></div><div class="progress" style="margin-top:9px"><div style="width:${n}%"></div></div><p class="hint">Each physical clothing item appears once, even if reused in multiple outfits.</p><div class="row"><button class="btn primary" style="flex:1" onclick="download()">Download TXT</button><button class="btn secondary" style="flex:1" onclick="copy()">Copy list</button></div><button class="btn secondary" style="width:100%;margin-top:8px" onclick="window.print()">Print / Save PDF</button></div><div class="help"><strong>Keep a backup</strong>Your data and photos are stored in this browser on this device, not in GitHub. Export your checklist before clearing browser data or changing phones.</div>`}
-function show(s){st.modal=`<div class="modal"><section class="sheet">${s}</section></div>`;render()}function closeModal(){st.modal=null;render()}
+function show(s){st.modal=`<div class="modal"><section class="sheet">${s}</section></div>`;render()}function closeModal(){st.modal=null;delete window.tempPhoto;render()}
 function cruise(){show(`<div class="sheettop"><h2>Cruise details</h2><button class="close" onclick="closeModal()">×</button></div><p class="hint">Name your trip so it's easy to recognise.</p><div class="field"><label>Cruise name</label><input id="cn" value="${esc(data.cruise.name||'')}"></div><div class="row"><div class="field" style="flex:1"><label>Start date</label><input id="cs" type="date" value="${data.cruise.start||''}"></div><div class="field" style="flex:1"><label>End date</label><input id="ce" type="date" value="${data.cruise.end||''}"></div></div><button class="btn primary" style="width:100%" onclick="saveCruise()">Save details</button>`)}function saveCruise(){data.cruise={name:document.getElementById('cn').value,start:document.getElementById('cs').value,end:document.getElementById('ce').value};save();closeModal()}
-function addItem(id){let ex=id?it(id):null;show(`<div class="sheettop"><h2>${ex?'Edit clothing':'Add clothing'}</h2><button class="close" onclick="closeModal()">×</button></div><div class="help"><strong>Photo tip</strong>Take a live photo or choose an existing image from your photo library.</div><div class="field"><label>Item name</label><input id="in" value="${esc(ex?.name||'')}" placeholder="e.g. Navy linen shirt"></div><div class="field"><label>Type</label><select id="ic">${['Top','Bottom','Dress','Shorts','Jacket','Shoes'].map(x=>`<option ${ex?.category===x?'selected':''}>${x}</option>`).join('')}</select></div><div class="field"><label>Photo (optional)</label><input id="ip" type="file" accept="image/*"></div><button class="btn primary" style="width:100%" onclick="saveItem('${id||''}')">${ex?'Save changes':'Save to wardrobe'}</button>`)}
-function saveItem(id){let n=document.getElementById('in').value.trim();if(!n)return alert('Enter an item name.');let f=document.getElementById('ip').files[0],c=document.getElementById('ic').value,ex=id?it(id):null;let saveChanges=photo=>{if(ex){ex.name=n;ex.category=c;if(photo!==undefined&&photo!=='')ex.photo=photo;}else{data.items.push({id:uid(),name:n,category:c,photo:photo||'',packed:false});}save();closeModal();st.tab='wardrobe';render()};if(f){let r=new FileReader();r.onload=()=>saveChanges(r.result);r.readAsDataURL(f)}else{saveChanges(ex?ex.photo:'');}}
+
+function addItem(id){
+  let ex=id?it(id):null;
+  window.tempPhoto=ex?.photo||'';
+  show(`
+    <div class="sheettop">
+      <h2>${ex?'Edit clothing':'Add clothing'}</h2>
+      <button class="close" onclick="closeModal()">×</button>
+    </div>
+    <div class="help"><strong>Photo options</strong>Take a live photo with your camera or choose an existing image from your library or files.</div>
+    <div class="field"><label>Item name</label><input id="in" value="${esc(ex?.name||'')}" placeholder="e.g. Navy linen shirt"></div>
+    <div class="field"><label>Type</label><select id="ic">${['Top','Bottom','Dress','Shorts','Jacket','Shoes'].map(x=>`<option ${ex?.category===x?'selected':''}>${x}</option>`).join('')}</select></div>
+    <div class="field">
+      <label>Photo</label>
+      <div style="display:flex;gap:8px;margin-bottom:8px">
+        <button class="btn secondary" style="flex:1" onclick="document.getElementById('camInput').click()">📸 Take Photo</button>
+        <button class="btn secondary" style="flex:1" onclick="document.getElementById('libInput').click()">🖼️ Choose Library</button>
+      </div>
+      <input id="camInput" type="file" accept="image/*" capture="environment" style="display:none" onchange="previewPhoto(this)">
+      <input id="libInput" type="file" accept="image/*" style="display:none" onchange="previewPhoto(this)">
+      <div id="photoPreview" style="aspect-ratio:1;max-width:120px;background:#edf0f5;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:24px;margin-top:8px">
+        ${window.tempPhoto?`<img src="${window.tempPhoto}" style="width:100%;height:100%;object-fit:contain">`:'👕'}
+      </div>
+    </div>
+    <button class="btn primary" style="width:100%" onclick="saveItem('${id||''}')">${ex?'Save changes':'Save to wardrobe'}</button>
+  `);
+}
+
+window.previewPhoto=(input)=>{
+  let f=input.files[0];
+  if(f){
+    let r=new FileReader();
+    r.onload=(e)=>{
+      window.tempPhoto=e.target.result;
+      let prev=document.getElementById('photoPreview');
+      if(prev)prev.innerHTML=`<img src="${window.tempPhoto}" style="width:100%;height:100%;object-fit:contain">`;
+    };
+    r.readAsDataURL(f);
+  }
+};
+
+function saveItem(id){
+  let n=document.getElementById('in').value.trim();
+  if(!n)return alert('Enter an item name.');
+  let c=document.getElementById('ic').value;
+  let ex=id?it(id):null;
+  let photo=window.tempPhoto!==undefined?window.tempPhoto:(ex?.photo||'');
+  if(ex){
+    ex.name=n;
+    ex.category=c;
+    ex.photo=photo;
+  }else{
+    data.items.push({id:uid(),name:n,category:c,photo:photo,packed:false});
+  }
+  save();
+  closeModal();
+  st.tab='wardrobe';
+  render();
+}
+
 function addOther(){show(`<div class="sheettop"><h2>Add an essential</h2><button class="close" onclick="closeModal()">×</button></div><div class="field"><label>Item name</label><input id="on" placeholder="e.g. Sunscreen"></div><div class="row"><div class="field" style="flex:1"><label>Category</label><select id="oc2">${['Underwear','Toiletries','Documents','Electronics','Swimwear','Other'].map(x=>`<option>${x}</option>`).join('')}</select></div><div class="field" style="width:95px"><label>Quantity</label><input id="oq" type="number" min="1" value="1"></div></div><button class="btn primary" style="width:100%" onclick="saveOther()">Add to checklist</button>`)}function saveOther(){let n=document.getElementById('on').value.trim();if(!n)return alert('Enter an item name.');data.other.push({id:uid(),name:n,category:document.getElementById('oc2').value,qty:Math.max(1,+document.getElementById('oq').value||1),packed:false});save();closeModal();st.tab='other';render()}
 function outfit(eid){let ex=eid?data.outfits.find(x=>x.id===eid):null,tops=data.items.filter(x=>x.category==='Top'),bots=data.items.filter(x=>['Bottom','Shorts'].includes(x.category)),dresses=data.items.filter(x=>x.category==='Dress'),shoes=data.items.filter(x=>x.category==='Shoes'),s={top:ex?.top||'',bottom:ex?.bottom||'',dress:ex?.dress||'',shoes:ex?.shoes||'',occasion:ex?.occasion||'day',name:ex?.name||''};window.sel=s;
 function clearTopBottom(){sel.top='';sel.bottom=''}function section(title,list,k,icon){let html='<div class="picktitle">'+title+'</div><p class="hint">'+(k==='dress'?'A dress replaces the top and bottom.':k==='shoes'?'Shoes are optional.':'Tap a photo to select a piece.')+'</p>';if(list.length){html+='<div class="pickgrid">'+list.map(function(x){return '<button class="pick '+(s[k]===x.id?'sel':'')+'" onclick="sel.'+k+'=\''+x.id+'\';'+(k==='dress'?'clearTopBottom();':'')+'drawOutfit()"><div class="pickphoto">'+pic(x,icon)+'</div><div class="pickname">'+esc(x.name)+'</div></button>'}).join('')+'</div>';if(s[k])html+='<button class="btn secondary" style="margin-top:6px;font-size:11px" onclick="sel.'+k+'=\'\';drawOutfit()">Clear selection</button>'}else{html+='<p class="muted">No '+title.toLowerCase()+' yet — add it in Wardrobe first.</p>'}return html}
