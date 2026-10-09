@@ -1,4 +1,4 @@
-const CACHE = 'cruise-packer-polished-v3';
+const CACHE = 'cruise-packer-polished-v5';
 
 self.addEventListener('install', e => {
   e.waitUntil(
