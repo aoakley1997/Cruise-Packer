@@ -3,7 +3,7 @@
 </style>
 </head><body><div class="wrap" id="app"></div>
 
-<!-- Firebase Compatible SDKs (Ensures global scope compatibility without black screens) -->
+<!-- Firebase Compatible SDKs -->
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
@@ -37,8 +37,7 @@ const oi=o=>({day:'☀️',ashore:'🏝️',dinner:'🍽️',dressup:'✨'})[o]|
 function save(){
   try{ localStorage.setItem(KEY,JSON.stringify(data)); }catch(e){}
   if(currentUser){
-    db.collection('trips').doc(currentUser.uid).set(data)
-      .catch(err => alert('Cloud Save Warning: document size might be too large. Try taking smaller photos.'));
+    db.collection('trips').doc(currentUser.uid).set(data).catch(err=>console.error('Cloud sync error:',err));
   }
 }
 
@@ -72,15 +71,12 @@ function renderLogin(){
       <div class="field"><label>Email</label><input id="loginEmail" type="email" placeholder="traveller@example.com"></div>
       <div class="field"><label>Password</label><input id="loginPass" type="password" placeholder="••••••••"></div>
       <button class="btn primary" style="width:100%;margin-top:6px" onclick="doLogin()">Sign In / Register</button>
-      <div id="loginError" class="danger" style="margin-top:10px;padding:8px;border-radius:8px;display:none"></div>
     </div>`;
 }
 
 async function doLogin(){
   let email=document.getElementById('loginEmail').value.trim();
   let pass=document.getElementById('loginPass').value.trim();
-  let errEl=document.getElementById('loginError');
-  errEl.style.display='none';
   if(!email||!pass){ alert('Enter email and password.'); return; }
   try{
     await auth.signInWithEmailAndPassword(email, pass);
@@ -88,8 +84,7 @@ async function doLogin(){
     try{
       await auth.createUserWithEmailAndPassword(email, pass);
     }catch(err){
-      errEl.style.display='block';
-      errEl.innerText=err.message;
+      alert('Login Error: ' + err.message);
     }
   }
 }
@@ -148,7 +143,7 @@ window.previewPhoto=(input)=>{
     img.src = URL.createObjectURL(f);
     img.onload = () => {
       let canvas = document.createElement('canvas');
-      let max = 800; // Compress photo dimensions to prevent 1MB Firestore limit errors
+      let max = 800;
       let w = img.width, h = img.height;
       if (w > max || h > max) {
         if (w > h) { h = Math.round((h * max) / w); w = max; }
