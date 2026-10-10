@@ -1,75 +1,70 @@
 <!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover"><meta name="theme-color" content="#142238"><link rel="manifest" href="manifest.json"><title>Cruise Packer</title><style>
-:root{--bg:#f4f6fa;--ink:#17253b;--muted:#68758a;--line:#e2e7ef;--brand:#5b58e8}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}.wrap{max-width:940px;margin:auto;padding-bottom:95px}header{padding:22px 18px;background:linear-gradient(135deg,#142238,#2b4262);color:#fff}.head{display:flex;justify-content:space-between;align-items:center}.brand{font-size:23px;font-weight:850}.sub{font-size:12px;opacity:.75}.icon{background:#ffffff20;color:#fff;border:1px solid #ffffff30;border-radius:12px;padding:9px}main{padding:16px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:15px}.stat,.panel,.item,.outfit{background:white;border:1px solid var(--line);border-radius:16px}.stat{padding:12px}.stat b{font-size:22px}.stat span{display:block;color:var(--muted);font-size:11px}.tabs,.filters,.chips{display:flex;gap:7px;overflow:auto;margin-bottom:14px}.tab,.filter,.chip{border:1px solid var(--line);background:white;border-radius:999px;padding:9px 13px;white-space:nowrap}.tab.active{background:var(--ink);color:white}.filter{font-size:12px;padding:7px 11px}.filter.active,.chip.sel{background:#eeedff;color:#4d49c8;border-color:#d4d2ff}.headrow{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:18px 0 8px}.headrow h2{font-size:18px;margin:0}.hint,.muted{font-size:12px;color:var(--muted)}.btn{border:0;border-radius:12px;padding:10px 13px;font-weight:750}.primary{background:var(--brand);color:white}.secondary{background:#edf0f6;color:var(--ink)}.danger{background:#fff0f0;color:#b4232f}.search{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;margin-bottom:9px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.item,.outfit{overflow:hidden}.photo{aspect-ratio:1;background:#edf0f5;display:flex;align-items:center;justify-content:center;font-size:34px;overflow:hidden}.photo img,.mini img,.pickphoto img,.previewcell img{width:100%;height:100%;object-fit:contain}.body{padding:10px}.name{font-weight:800;overflow-wrap:anywhere}.badge{display:inline-block;border-radius:99px;padding:4px 8px;margin-top:6px;font-size:10px;font-weight:800;background:#fff1d0;color:#855600}.badge.done{background:#dff7ed;color:#087f5b}.look,.previewlook{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:10px 10px 0}.mini,.previewcell{aspect-ratio:1;background:#edf0f5;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:25px}.outfitbody{padding:10px}.occasion{font-size:10px;color:var(--brand);font-weight:900;text-transform:uppercase}.actions{display:flex;gap:7px;margin-top:9px}.actions .btn{font-size:12px;padding:8px}.empty{text-align:center;padding:28px 18px;background:white;border:1px dashed #cfd6e3;border-radius:17px;color:var(--muted)}.empty h3{color:var(--ink);margin:8px 0 4px}.help{background:#f0efff;border:1px solid #e1dfff;border-radius:12px;padding:11px;margin:10px 0 14px;font-size:12px;color:#4b4a7a}.help strong{display:block;color:data.color||'#37357c';margin-bottom:3px}.bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:9px max(10px,calc((100vw - 940px)/2 + 10px)) calc(9px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.bottom button{border:0;border-radius:12px;padding:11px 4px;background:#edf0f6;font-weight:850;font-size:12px}.bottom button:first-child{background:var(--brand);color:white}.field{margin-bottom:12px}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:6px}.field input,.field select{width:100%;padding:11px;border:1px solid var(--line);border-radius:11px;background:white}.row{display:flex;gap:8px;align-items:center}.between{justify-content:space-between}.panel{padding:15px}.progress{height:8px;background:#e8ebf1;border-radius:9px;overflow:hidden}.progress div{height:100%;background:var(--brand)}.modal{position:fixed;inset:0;background:#101c2f99;z-index:50;display:flex;align-items:flex-end;justify-content:center}.sheet{background:white;width:min(940px,100%);max-height:94vh;overflow:auto;border-radius:24px 24px 0 0;padding:17px 16px calc(22px + env(safe-area-inset-bottom))}.sheettop{display:flex;justify-content:space-between;align-items:center;gap:10px}.sheettop h2{font-size:20px;margin:0}.close{border:0;border-radius:50%;width:36px;height:36px;background:#edf0f6;font-size:21px}.chips{margin:12px 0}.chip{font-size:12px;font-weight:750}.suggest{display:flex;gap:8px;margin-bottom:12px}.suggest button{flex:1}.preview{background:linear-gradient(135deg,#f0efff,#f7f8fc);padding:12px;border-radius:16px;margin-bottom:14px}.picktitle{font-weight:850;margin:15px 0 4px}.pickgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.pick{border:2px solid var(--line);border-radius:12px;background:white;padding:0;overflow:hidden;text-align:left;min-width:0}.pick.sel{border-color:var(--brand)}.pickphoto{aspect-ratio:1;background:#edf0f5;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:25px}.pickname{padding:6px;font-size:11px;font-weight:800;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.footnote{font-size:11px;color:var(--muted);margin-top:12px}@media(min-width:650px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.pickgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.sheet{border-radius:24px;margin:20px;max-height:calc(100vh - 40px)}.modal{align-items:center}}@media print{header,.tabs,.bottom,.btn,.filters,.search,.stats,.help,nav{display:none!important}body{background:white;color:black}.wrap{max-width:100%!important;padding:0!important}.panel{border:1px solid #ddd!important;box-shadow:none!important}}
+:root{--bg:#f4f6fa;--ink:#17253b;--muted:#68758a;--line:#e2e7ef;--brand:#5b58e8}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.45 -apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif}button,input,select{font:inherit}button{cursor:pointer}.wrap{max-width:940px;margin:auto;padding-bottom:95px}header{padding:22px 18px;background:linear-gradient(135deg,#142238,#2b4262);color:#fff}.head{display:flex;justify-content:space-between;align-items:center}.brand{font-size:23px;font-weight:850}.sub{font-size:12px;opacity:.75}.icon{background:#ffffff20;color:#fff;border:1px solid #ffffff30;border-radius:12px;padding:9px}main{padding:16px}.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-bottom:15px}.stat,.panel,.item,.outfit{background:white;border:1px solid var(--line);border-radius:16px}.stat{padding:12px}.stat b{font-size:22px}.stat span{display:block;color:var(--muted);font-size:11px}.tabs,.filters,.chips{display:flex;gap:7px;overflow:auto;margin-bottom:14px}.tab,.filter,.chip{border:1px solid var(--line);background:white;border-radius:999px;padding:9px 13px;white-space:nowrap}.tab.active{background:var(--ink);color:white}.filter{font-size:12px;padding:7px 11px}.filter.active,.chip.sel{background:#eeedff;color:#4d49c8;border-color:#d4d2ff}.headrow{display:flex;justify-content:space-between;align-items:center;gap:10px;margin:18px 0 8px}.headrow h2{font-size:18px;margin:0}.hint,.muted{font-size:12px;color:var(--muted)}.btn{border:0;border-radius:12px;padding:10px 13px;font-weight:750}.primary{background:var(--brand);color:white}.secondary{background:#edf0f6;color:var(--ink)}.danger{background:#fff0f0;color:#b4232f}.search{width:100%;padding:12px;border:1px solid var(--line);border-radius:12px;margin-bottom:9px}.grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.item,.outfit{overflow:hidden}.photo{aspect-ratio:1;background:#edf0f5;display:flex;align-items:center;justify-content:center;font-size:34px;overflow:hidden}.photo img,.mini img,.pickphoto img,.previewcell img{width:100%;height:100%;object-fit:contain}.body{padding:10px}.name{font-weight:800;overflow-wrap:anywhere}.badge{display:inline-block;border-radius:99px;padding:4px 8px;margin-top:6px;font-size:10px;font-weight:800;background:#fff1d0;color:#855600}.badge.done{background:#dff7ed;color:#087f5b}.look,.previewlook{display:grid;grid-template-columns:repeat(3,1fr);gap:7px;padding:10px 10px 0}.mini,.previewcell{aspect-ratio:1;background:#edf0f5;border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:25px}.outfitbody{padding:10px}.occasion{font-size:10px;color:var(--brand);font-weight:900;text-transform:uppercase}.actions{display:flex;gap:7px;margin-top:9px}.actions .btn{font-size:12px;padding:8px}.empty{text-align:center;padding:28px 18px;background:white;border:1px dashed #cfd6e3;border-radius:17px;color:var(--muted)}.empty h3{color:var(--ink);margin:8px 0 4px}.help{background:#f0efff;border:1px solid #e1dfff;border-radius:12px;padding:11px;margin:10px 0 14px;font-size:12px;color:#4b4a7a}.help strong{display:block;color:#37357c;margin-bottom:3px}.bottom{position:fixed;bottom:0;left:0;right:0;background:#ffffffed;backdrop-filter:blur(12px);border-top:1px solid var(--line);padding:9px max(10px,calc((100vw - 940px)/2 + 10px)) calc(9px + env(safe-area-inset-bottom));display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.bottom button{border:0;border-radius:12px;padding:11px 4px;background:#edf0f6;font-weight:850;font-size:12px}.bottom button:first-child{background:var(--brand);color:white}.field{margin-bottom:12px}.field label{display:block;font-size:12px;font-weight:800;margin-bottom:6px}.field input,.field select{width:100%;padding:11px;border:1px solid var(--line);border-radius:11px;background:white}.row{display:flex;gap:8px;align-items:center}.between{justify-content:space-between}.panel{padding:15px}.progress{height:8px;background:#e8ebf1;border-radius:9px;overflow:hidden}.progress div{height:100%;background:var(--brand)}.modal{position:fixed;inset:0;background:#101c2f99;z-index:50;display:flex;align-items:flex-end;justify-content:center}.sheet{background:white;width:min(940px,100%);max-height:94vh;overflow:auto;border-radius:24px 24px 0 0;padding:17px 16px calc(22px + env(safe-area-inset-bottom))}.sheettop{display:flex;justify-content:space-between;align-items:center;gap:10px}.sheettop h2{font-size:20px;margin:0}.close{border:0;border-radius:50%;width:36px;height:36px;background:#edf0f6;font-size:21px}.chips{margin:12px 0}.chip{font-size:12px;font-weight:750}.suggest{display:flex;gap:8px;margin-bottom:12px}.suggest button{flex:1}.preview{background:linear-gradient(135deg,#f0efff,#f7f8fc);padding:12px;border-radius:16px;margin-bottom:14px}.picktitle{font-weight:850;margin:15px 0 4px}.pickgrid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}.pick{border:2px solid var(--line);border-radius:12px;background:white;padding:0;overflow:hidden;text-align:left;min-width:0}.pick.sel{border-color:var(--brand)}.pickphoto{aspect-ratio:1;background:#edf0f5;display:flex;align-items:center;justify-content:center;overflow:hidden;font-size:25px}.pickname{padding:6px;font-size:11px;font-weight:800;overflow:hidden;white-space:nowrap;text-overflow:ellipsis}.footnote{font-size:11px;color:var(--muted);margin-top:12px}@media(min-width:650px){.grid{grid-template-columns:repeat(3,minmax(0,1fr))}.pickgrid{grid-template-columns:repeat(4,minmax(0,1fr))}.sheet{border-radius:24px;margin:20px;max-height:calc(100vh - 40px)}.modal{align-items:center}}@media print{header,.tabs,.bottom,.btn,.filters,.search,.stats,.help,nav{display:none!important}body{background:white;color:black}.wrap{max-width:100%!important;padding:0!important}.panel{border:1px solid #ddd!important;box-shadow:none!important}}
 </style>
 </head><body><div class="wrap" id="app"></div>
 
-<!-- Firebase Modular SDKs -->
-<script type="module">
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-app.js";
-  import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-auth.js";
-  import { getFirestore, doc, getDoc, setDoc } from "https://www.gstatic.com/firebasejs/13.0.0/firebase-firestore.js";
-
-  const firebaseConfig = {
-    apiKey: "AIzaSyDbvwveXCJklWyPN1tlIf_EUv84OTEip-k",
-    authDomain: "cruise-packer.firebaseapp.com",
-    projectId: "cruise-packer",
-    storageBucket: "cruise-packer.firebasestorage.app",
-    messagingSenderId: "72270607937",
-    appId: "1:72270607937:web:1ec0ce14c6c74b9d10b8c0"
-  };
-
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
-
-  window.fbAuth = auth;
-  window.fbDb = db;
-  window.fbSignIn = signInWithEmailAndPassword;
-  window.fbCreateUser = createUserWithEmailAndPassword;
-  window.fbSignOut = signOut;
-  window.fbDoc = doc;
-  window.fbGetDoc = getDoc;
-  window.fbSetDoc = setDoc;
-
-  onAuthStateChanged(auth, async user => {
-    window.currentUser = user;
-    if(user){
-      let docRef = doc(db, 'trips', user.uid);
-      let docSnap = await getDoc(docRef);
-      if(docSnap.exists()){
-        window.data = docSnap.data();
-        localStorage.setItem('cruisePackerV1', JSON.stringify(window.data));
-      } else {
-        let local = null;
-        try{ local = JSON.parse(localStorage.getItem('cruisePackerV1')) }catch(e){}
-        if(local && typeof local === 'object'){
-          window.data = local;
-        } else {
-          window.data = {cruise:{name:'My Cruise'},items:[],outfits:[],other:[]};
-        }
-        await setDoc(docRef, window.data);
-      }
-      if(typeof window.renderApp === 'function') window.renderApp();
-    } else {
-      if(typeof window.renderLogin === 'function') window.renderLogin();
-    }
-  });
-</script>
+<!-- Firebase Compatible SDKs (Ensures global scope compatibility without black screens) -->
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-auth-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore-compat.js"></script>
 
 <script>
+const firebaseConfig = {
+  apiKey: "AIzaSyDbvwveXCJklWyPN1tlIf_EUv84OTEip-k",
+  authDomain: "cruise-packer.firebaseapp.com",
+  projectId: "cruise-packer",
+  storageBucket: "cruise-packer.firebasestorage.app",
+  messagingSenderId: "72270607937",
+  appId: "1:72270607937:web:1ec0ce14c6c74b9d10b8c0"
+};
+
+firebase.initializeApp(firebaseConfig);
+const auth = firebase.auth();
+const db = firebase.firestore();
+
 const KEY='cruisePackerV1';
-window.data=window.data||{cruise:{name:'My Cruise'},items:[],outfits:[],other:[]};
+let data={cruise:{name:'My Cruise'},items:[],outfits:[],other:[]};
+let currentUser=null;
 let st={tab:'outfits',q:'',cat:'All',oq:'',oc:'All',modal:null};
-const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7),it=id=>window.data.items.find(x=>x.id===id),esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m])),pic=(x,i)=>x&&x.photo?`<img src="${x.photo}" alt="">`:i,ol=o=>({day:'Day',ashore:'Ashore',dinner:'Dinner',dressup:'Dress up'})[o]||'Day',oi=o=>({day:'☀️',ashore:'🏝️',dinner:'🍽️',dressup:'✨'})[o]||'👕';
+
+const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
+const it=id=>data.items.find(x=>x.id===id);
+const esc=s=>String(s??'').replace(/[&<>"']/g,m=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[m]));
+const pic=(x,i)=>x&&x.photo?`<img src="${x.photo}" alt="">`:i;
+const ol=o=>({day:'Day',ashore:'Ashore',dinner:'Dinner',dressup:'Dress up'})[o]||'Day';
+const oi=o=>({day:'☀️',ashore:'🏝️',dinner:'🍽️',dressup:'✨'})[o]||'👕';
 
 function save(){
-  try{localStorage.setItem(KEY,JSON.stringify(window.data))}catch(e){}
-  if(window.currentUser && window.fbDb){
-    window.fbSetDoc(window.fbDoc(window.fbDb, 'trips', window.currentUser.uid), window.data).catch(err=>console.error('Cloud sync error:',err));
+  try{ localStorage.setItem(KEY,JSON.stringify(data)); }catch(e){}
+  if(currentUser){
+    db.collection('trips').doc(currentUser.uid).set(data)
+      .catch(err => alert('Cloud Save Warning: document size might be too large. Try taking smaller photos.'));
   }
 }
 
-window.renderLogin=function(){
+auth.onAuthStateChanged(async user => {
+  currentUser = user;
+  if(user){
+    let docRef = db.collection('trips').doc(user.uid);
+    let doc = await docRef.get();
+    if(doc.exists){
+      data = doc.data() || {cruise:{name:'My Cruise'},items:[],outfits:[],other:[]};
+      localStorage.setItem(KEY, JSON.stringify(data));
+    } else {
+      let local = null;
+      try{ local = JSON.parse(localStorage.getItem(KEY)); }catch(e){}
+      if(local && typeof local === 'object'){
+        data = local;
+      }
+      await docRef.set(data);
+    }
+    renderApp();
+  } else {
+    renderLogin();
+  }
+});
+
+function renderLogin(){
   document.getElementById('app').innerHTML=`
     <div style="max-width:400px;margin:60px auto;padding:20px;background:white;border:1px solid var(--line);border-radius:16px">
       <h2>🧳 Cruise Packer Login</h2>
@@ -79,19 +74,19 @@ window.renderLogin=function(){
       <button class="btn primary" style="width:100%;margin-top:6px" onclick="doLogin()">Sign In / Register</button>
       <div id="loginError" class="danger" style="margin-top:10px;padding:8px;border-radius:8px;display:none"></div>
     </div>`;
-};
+}
 
 async function doLogin(){
   let email=document.getElementById('loginEmail').value.trim();
   let pass=document.getElementById('loginPass').value.trim();
   let errEl=document.getElementById('loginError');
   errEl.style.display='none';
-  if(!email||!pass){alert('Enter email and password.');return;}
+  if(!email||!pass){ alert('Enter email and password.'); return; }
   try{
-    await window.fbSignIn(window.fbAuth, email, pass);
+    await auth.signInWithEmailAndPassword(email, pass);
   }catch(e){
     try{
-      await window.fbCreateUser(window.fbAuth, email, pass);
+      await auth.createUserWithEmailAndPassword(email, pass);
     }catch(err){
       errEl.style.display='block';
       errEl.innerText=err.message;
@@ -99,24 +94,25 @@ async function doLogin(){
   }
 }
 
-function logout(){ window.fbSignOut(window.fbAuth); }
+function logout(){ auth.signOut(); }
 
-window.renderApp=function(){
-  if(!window.currentUser) return window.renderLogin();
-  let data=window.data;
-  let total=data.items.length+data.other.length,p=data.items.filter(x=>x.packed).length+data.other.filter(x=>x.packed).length;
-  document.getElementById('app').innerHTML=`<header><div class="head"><div><div class="brand">🧳 Cruise Packer</div><div class="sub">${esc(data.cruise.name||'My Cruise')} · <span onclick="logout()" style="text-decoration:underline;cursor:pointer">Logout</span></div></div><button class="icon" onclick="cruise()">⚙️</button></div></header><main><div class="stats"><div class="stat"><b>${data.outfits.length}</b><span>Outfits</span></div><div class="stat"><b>${data.items.length}</b><span>Wardrobe items</span></div><div class="stat"><b>${total?Math.round(p/total*100):0}%</b><span>Packed</span></div></div><div class="tabs">${[['outfits','Outfits'],['wardrobe','Wardrobe'],['other','Essentials'],['export','Export']].map(([k,v])=>`<button class="tab ${st.tab===k?'active':''}" onclick="st.tab='${k}';window.renderApp()">${v}</button>`).join('')}</div>${st.tab==='outfits'?outfits():st.tab==='wardrobe'?wardrobe():st.tab==='other'?other():exports()}</main><nav class="bottom"><button onclick="outfit()">＋ Outfit</button><button onclick="addItem()">＋ Clothing</button><button onclick="addOther()">＋ Essentials</button></nav>${st.modal||''}`;
-};
+function renderApp(){
+  if(!currentUser) return renderLogin();
+  let total=data.items.length+data.other.length, p=data.items.filter(x=>x.packed).length+data.other.filter(x=>x.packed).length;
+  document.getElementById('app').innerHTML=`<header><div class="head"><div><div class="brand">🧳 Cruise Packer</div><div class="sub">${esc(data.cruise.name||'My Cruise')} · <span onclick="logout()" style="text-decoration:underline;cursor:pointer">Logout</span></div></div><button class="icon" onclick="cruise()">⚙️</button></div></header><main><div class="stats"><div class="stat"><b>${data.outfits.length}</b><span>Outfits</span></div><div class="stat"><b>${data.items.length}</b><span>Wardrobe items</span></div><div class="stat"><b>${total?Math.round(p/total*100):0}%</b><span>Packed</span></div></div><div class="tabs">${[['outfits','Outfits'],['wardrobe','Wardrobe'],['other','Essentials'],['export','Export']].map(([k,v])=>`<button class="tab ${st.tab===k?'active':''}" onclick="st.tab='${k}';renderApp()">${v}</button>`).join('')}</div>${st.tab==='outfits'?outfits():st.tab==='wardrobe'?wardrobe():st.tab==='other'?other():exports()}</main><nav class="bottom"><button onclick="outfit()">＋ Outfit</button><button onclick="addItem()">＋ Clothing</button><button onclick="addOther()">＋ Essentials</button></nav>${st.modal||''}`;
+}
 
-function render(){ if(window.renderApp) window.renderApp(); }
+function render(){ renderApp(); }
 
-function outfits(){let data=window.data;let s=`<div class="headrow"><h2>Your outfit plan</h2><button class="btn primary" onclick="outfit()">＋ Create</button></div><p class="hint">Organize your days and evenings by combining your wardrobe items into looks.</p>`;if(!data.outfits.length)return s+`<div class="empty"><div style="font-size:35px">👕 👖 👟</div><h3>Build your first look</h3><p>Add clothing items to your wardrobe first, then combine them into outfits here.</p><button class="btn primary" onclick="outfit()">Build an outfit</button><div class="help" style="text-align:left"><strong>Quick tip</strong>Add tops, bottoms and shoes first. You can also build an outfit around a dress.</div></div>`;return s+['day','ashore','dinner','dressup'].map(o=>{let a=data.outfits.filter(x=>x.occasion===o);return a.length?`<div class="headrow"><h2>${oi(o)} ${ol(o)}</h2><span class="muted">${a.length} looks</span></div><div class="grid">${a.map(card).join('')}</div>`:''}).join('')}
+function outfits(){let s=`<div class="headrow"><h2>Your outfit plan</h2><button class="btn primary" onclick="outfit()">＋ Create</button></div><p class="hint">Organize your days and evenings by combining your wardrobe items into looks.</p>`;if(!data.outfits.length)return s+`<div class="empty"><div style="font-size:35px">👕 👖 👟</div><h3>Build your first look</h3><p>Add clothing items to your wardrobe first, then combine them into outfits here.</p><button class="btn primary" onclick="outfit()">Build an outfit</button><div class="help" style="text-align:left"><strong>Quick tip</strong>Add tops, bottoms and shoes first. You can also build an outfit around a dress.</div></div>`;return s+['day','ashore','dinner','dressup'].map(o=>{let a=data.outfits.filter(x=>x.occasion===o);return a.length?`<div class="headrow"><h2>${oi(o)} ${ol(o)}</h2><span class="muted">${a.length} looks</span></div><div class="grid">${a.map(card).join('')}</div>`:''}).join('')}
 function card(o){let d=it(o.dress),p=d?[d,null,it(o.shoes)]:[it(o.top),it(o.bottom),it(o.shoes)];return `<article class="outfit"><div class="look">${p.map((x,i)=>`<div class="mini">${pic(x,['👕','👖','👟'][i])}</div>`).join('')}</div><div class="outfitbody"><div class="row between"><div><div class="name">${esc(o.name)}</div><div class="occasion">${ol(o.occasion)}</div></div><button class="btn ${o.packed?'primary':'secondary'}" style="font-size:11px;padding:7px" onclick="toggleOut('${o.id}')">${o.packed?'✓ Ready':'Mark ready'}</button></div><div class="actions"><button class="btn secondary" style="flex:1" onclick="outfit('${o.id}')">Edit look</button><button class="btn danger" onclick="delOut('${o.id}')">Delete</button></div></div></article>`}
-function wardrobe(){let data=window.data;let cats=['All','Top','Bottom','Dress','Shorts','Jacket','Shoes'],a=data.items.filter(x=>(st.cat==='All'||x.category===st.cat)&&x.name.toLowerCase().includes(st.q.toLowerCase()));return `<div class="headrow"><h2>Your wardrobe</h2><button class="btn primary" onclick="addItem()">＋ Add</button></div><div class="help"><strong>Photo tip</strong>Take photos against a plain background in good light. This makes outfit combinations easier to scan.</div><input class="search" placeholder="Search clothing…" value="${esc(st.q)}" oninput="st.q=this.value;window.renderApp()"><div class="filters">${cats.map(c=>`<button class="filter ${st.cat===c?'active':''}" onclick="st.cat='${c}';window.renderApp()">${c}</button>`).join('')}</div>${a.length?`<div class="grid">${a.map(x=>`<article class="item"><div class="photo">${pic(x,x.category==='Shoes'?'👟':x.category==='Dress'?'👗':['Bottom','Shorts'].includes(x.category)?'👖':'👕')}</div><div class="body"><div class="name">${esc(x.name)}</div><div class="muted">${esc(x.category)}</div><span class="badge ${x.packed?'done':''}">${x.packed?'✓ Packed':'Not packed'}</span><div class="actions"><button class="btn secondary" onclick="addItem('${x.id}')">Edit</button><button class="btn secondary" style="flex:1" onclick="toggleItem('${x.id}')">${x.packed?'Unpack':'Mark packed'}</button><button class="btn danger" onclick="delItem('${x.id}')">×</button></div></div></article>`).join('')}</div>`:`<div class="empty"><h3>No matching clothing</h3><p>Try another filter or add a wardrobe item.</p><button class="btn primary" onclick="addItem()">＋ Add clothing</button></div>`}`}
-function other(){let data=window.data;let cats=['All','Underwear','Toiletries','Documents','Electronics','Swimwear','Other'],a=data.other.filter(x=>(st.oc==='All'||x.category===st.oc)&&x.name.toLowerCase().includes(st.oq.toLowerCase()));return `<div class="headrow"><h2>Essentials checklist</h2><button class="btn primary" onclick="addOther()">＋ Add item</button></div><p class="hint">Underwear, toiletries, documents, electronics and everything beyond outfits.</p><input class="search" placeholder="Search essentials…" value="${esc(st.oq)}" oninput="st.oq=this.value;window.renderApp()"><div class="filters">${cats.map(c=>`<button class="filter ${st.oc===c?'active':''}" onclick="st.oc='${c}';window.renderApp()">${c}</button>`).join('')}</div>${a.length?`<div class="grid">${a.map(x=>`<div class="panel"><div class="row between"><div><div class="name">${esc(x.name)}</div><div class="muted">${esc(x.category)} · Qty ${x.qty||1}</div><span class="badge ${x.packed?'done':''}">${x.packed?'✓ Packed':'Not packed'}</span></div><button class="btn ${x.packed?'primary':'secondary'}" onclick="toggleOther('${x.id}')">${x.packed?'✓':'Pack'}</button></div><div class="actions"><button class="btn danger" onclick="delOther('${x.id}')">Remove</button></div></div>`).join('')}</div>`:`<div class="empty"><div style="font-size:34px">🪥</div><h3>Your checklist starts here</h3><p>Add essentials so nothing gets forgotten.</p><button class="btn primary" onclick="addOther()">＋ Add an essential</button></div>`}`}
-function exports(){let data=window.data;let t=data.items.length+data.other.length,p=data.items.filter(x=>x.packed).length+data.other.filter(x=>x.packed).length,n=t?Math.round(p/t*100):0;return `<div class="headrow"><h2>Export & progress</h2></div><div class="panel"><div class="row between"><b>Packing checklist</b><b>${n}%</b></div><div class="progress" style="margin-top:9px"><div style="width:${n}%"></div></div><p class="hint">Each physical clothing item appears once, even if reused in multiple outfits.</p><div class="row"><button class="btn primary" style="flex:1" onclick="download()">Download TXT</button><button class="btn secondary" style="flex:1" onclick="copy()">Copy list</button></div><button class="btn secondary" style="width:100%;margin-top:8px" onclick="window.print()">Print / Save PDF</button></div><div class="help"><strong>Keep a backup</strong>Your data and photos are stored in this browser on this device, not in GitHub. Export your checklist before clearing browser data or changing phones.</div>`}
-function show(s){st.modal=`<div class="modal"><section class="sheet">${s}</section></div>`;window.renderApp();}function closeModal(){st.modal=null;delete window.tempPhoto;window.renderApp();}
-function cruise(){let data=window.data;show(`<div class="sheettop"><h2>Cruise details</h2><button class="close" onclick="closeModal()">×</button></div><p class="hint">Name your trip so it's easy to recognise.</p><div class="field"><label>Cruise name</label><input id="cn" value="${esc(data.cruise.name||'')}"></div><div class="row"><div class="field" style="flex:1"><label>Start date</label><input id="cs" type="date" value="${data.cruise.start||''}"></div><div class="field" style="flex:1"><label>End date</label><input id="ce" type="date" value="${data.cruise.end||''}"></div></div><button class="btn primary" style="width:100%" onclick="saveCruise()">Save details</button>`)}function saveCruise(){window.data.cruise={name:document.getElementById('cn').value,start:document.getElementById('cs').value,end:document.getElementById('ce').value};save();closeModal()}
+function wardrobe(){let cats=['All','Top','Bottom','Dress','Shorts','Jacket','Shoes'],a=data.items.filter(x=>(st.cat==='All'||x.category===st.cat)&&x.name.toLowerCase().includes(st.q.toLowerCase()));return `<div class="headrow"><h2>Your wardrobe</h2><button class="btn primary" onclick="addItem()">＋ Add</button></div><div class="help"><strong>Photo tip</strong>Take photos against a plain background in good light. This makes outfit combinations easier to scan.</div><input class="search" placeholder="Search clothing…" value="${esc(st.q)}" oninput="st.q=this.value;renderApp()"><div class="filters">${cats.map(c=>`<button class="filter ${st.cat===c?'active':''}" onclick="st.cat='${c}';renderApp()">${c}</button>`).join('')}</div>${a.length?`<div class="grid">${a.map(x=>`<article class="item"><div class="photo">${pic(x,x.category==='Shoes'?'👟':x.category==='Dress'?'👗':['Bottom','Shorts'].includes(x.category)?'👖':'👕')}</div><div class="body"><div class="name">${esc(x.name)}</div><div class="muted">${esc(x.category)}</div><span class="badge ${x.packed?'done':''}">${x.packed?'✓ Packed':'Not packed'}</span><div class="actions"><button class="btn secondary" onclick="addItem('${x.id}')">Edit</button><button class="btn secondary" style="flex:1" onclick="toggleItem('${x.id}')">${x.packed?'Unpack':'Mark packed'}</button><button class="btn danger" onclick="delItem('${x.id}')">×</button></div></div></article>`).join('')}</div>`:`<div class="empty"><h3>No matching clothing</h3><p>Try another filter or add a wardrobe item.</p><button class="btn primary" onclick="addItem()">＋ Add clothing</button></div>`}`}
+function other(){let cats=['All','Underwear','Toiletries','Documents','Electronics','Swimwear','Other'],a=data.other.filter(x=>(st.oc==='All'||x.category===st.oc)&&x.name.toLowerCase().includes(st.oq.toLowerCase()));return `<div class="headrow"><h2>Essentials checklist</h2><button class="btn primary" onclick="addOther()">＋ Add item</button></div><p class="hint">Underwear, toiletries, documents, electronics and everything beyond outfits.</p><input class="search" placeholder="Search essentials…" value="${esc(st.oq)}" oninput="st.oq=this.value;renderApp()"><div class="filters">${cats.map(c=>`<button class="filter ${st.oc===c?'active':''}" onclick="st.oc='${c}';renderApp()">${c}</button>`).join('')}</div>${a.length?`<div class="grid">${a.map(x=>`<div class="panel"><div class="row between"><div><div class="name">${esc(x.name)}</div><div class="muted">${esc(x.category)} · Qty ${x.qty||1}</div><span class="badge ${x.packed?'done':''}">${x.packed?'✓ Packed':'Not packed'}</span></div><button class="btn ${x.packed?'primary':'secondary'}" onclick="toggleOther('${x.id}')">${x.packed?'✓':'Pack'}</button></div><div class="actions"><button class="btn danger" onclick="delOther('${x.id}')">Remove</button></div></div>`).join('')}</div>`:`<div class="empty"><div style="font-size:34px">🪥</div><h3>Your checklist starts here</h3><p>Add essentials so nothing gets forgotten.</p><button class="btn primary" onclick="addOther()">＋ Add an essential</button></div>`}`}
+function exports(){let t=data.items.length+data.other.length,p=data.items.filter(x=>x.packed).length+data.other.filter(x=>x.packed).length,n=t?Math.round(p/t*100):0;return `<div class="headrow"><h2>Export & progress</h2></div><div class="panel"><div class="row between"><b>Packing checklist</b><b>${n}%</b></div><div class="progress" style="margin-top:9px"><div style="width:${n}%"></div></div><p class="hint">Each physical clothing item appears once, even if reused in multiple outfits.</p><div class="row"><button class="btn primary" style="flex:1" onclick="download()">Download TXT</button><button class="btn secondary" style="flex:1" onclick="copy()">Copy list</button></div><button class="btn secondary" style="width:100%;margin-top:8px" onclick="window.print()">Print / Save PDF</button></div><div class="help"><strong>Keep a backup</strong>Your data and photos are stored in this browser on this device, not in GitHub. Export your checklist before clearing browser data or changing phones.</div>`}
+function show(s){st.modal=`<div class="modal"><section class="sheet">${s}</section></div>`;renderApp();}
+function closeModal(){st.modal=null;delete window.tempPhoto;renderApp();}
+function cruise(){show(`<div class="sheettop"><h2>Cruise details</h2><button class="close" onclick="closeModal()">×</button></div><p class="hint">Name your trip so it's easy to recognise.</p><div class="field"><label>Cruise name</label><input id="cn" value="${esc(data.cruise.name||'')}"></div><div class="row"><div class="field" style="flex:1"><label>Start date</label><input id="cs" type="date" value="${data.cruise.start||''}"></div><div class="field" style="flex:1"><label>End date</label><input id="ce" type="date" value="${data.cruise.end||''}"></div></div><button class="btn primary" style="width:100%" onclick="saveCruise()">Save details</button>`)}
+function saveCruise(){data.cruise={name:document.getElementById('cn').value,start:document.getElementById('cs').value,end:document.getElementById('ce').value};save();closeModal();}
 
 function addItem(id){
   let ex=id?it(id):null;
@@ -148,13 +144,23 @@ function addItem(id){
 window.previewPhoto=(input)=>{
   let f=input.files[0];
   if(f){
-    let r=new FileReader();
-    r.onload=(e)=>{
-      window.tempPhoto=e.target.result;
-      let prev=document.getElementById('photoPreview');
-      if(prev)prev.innerHTML=`<img src="${window.tempPhoto}" style="width:100%;height:100%;object-fit:contain">`;
+    let img = new Image();
+    img.src = URL.createObjectURL(f);
+    img.onload = () => {
+      let canvas = document.createElement('canvas');
+      let max = 800; // Compress photo dimensions to prevent 1MB Firestore limit errors
+      let w = img.width, h = img.height;
+      if (w > max || h > max) {
+        if (w > h) { h = Math.round((h * max) / w); w = max; }
+        else { w = Math.round((w * max) / h); h = max; }
+      }
+      canvas.width = w; canvas.height = h;
+      let ctx = canvas.getContext('2d');
+      ctx.drawImage(img, 0, 0, w, h);
+      window.tempPhoto = canvas.toDataURL('image/jpeg', 0.7);
+      let prev = document.getElementById('photoPreview');
+      if(prev) prev.innerHTML = `<img src="${window.tempPhoto}" style="width:100%;height:100%;object-fit:contain">`;
     };
-    r.readAsDataURL(f);
   }
 };
 
@@ -169,20 +175,32 @@ function saveItem(id){
     ex.category=c;
     ex.photo=photo;
   }else{
-    window.data.items.push({id:uid(),name:n,category:c,photo:photo,packed:false});
+    data.items.push({id:uid(),name:n,category:c,photo:photo,packed:false});
   }
   save();
   closeModal();
   st.tab='wardrobe';
-  window.renderApp();
+  renderApp();
 }
 
-function addOther(){show(`<div class="sheettop"><h2>Add an essential</h2><button class="close" onclick="closeModal()">×</button></div><div class="field"><label>Item name</label><input id="on" placeholder="e.g. Sunscreen"></div><div class="row"><div class="field" style="flex:1"><label>Category</label><select id="oc2">${['Underwear','Toiletries','Documents','Electronics','Swimwear','Other'].map(x=>`<option>${x}</option>`).join('')}</select></div><div class="field" style="width:95px"><label>Quantity</label><input id="oq" type="number" min="1" value="1"></div></div><button class="btn primary" style="width:100%" onclick="saveOther()">Add to checklist</button>`)}function saveOther(){let n=document.getElementById('on').value.trim();if(!n)return alert('Enter an item name.');window.data.other.push({id:uid(),name:n,category:document.getElementById('oc2').value,qty:Math.max(1,+document.getElementById('oq').value||1),packed:false});save();closeModal();st.tab='other';window.renderApp()}
-function outfit(eid){let data=window.data;let ex=eid?data.outfits.find(x=>x.id===eid):null,tops=data.items.filter(x=>x.category==='Top'),bots=data.items.filter(x=>['Bottom','Shorts'].includes(x.category)),dresses=data.items.filter(x=>x.category==='Dress'),shoes=data.items.filter(x=>x.category==='Shoes'),s={top:ex?.top||'',bottom:ex?.bottom||'',dress:ex?.dress||'',shoes:ex?.shoes||'',occasion:ex?.occasion||'day',name:ex?.name||''};window.sel=s;
-function clearTopBottom(){sel.top='';sel.bottom=''}function section(title,list,k,icon){let html='<div class="picktitle">'+title+'</div><p class="hint">'+(k==='dress'?'A dress replaces the top and bottom.':k==='shoes'?'Shoes are optional.':'Tap a photo to select a piece.')+'</p>';if(list.length){html+='<div class="pickgrid">'+list.map(function(x){return '<button class="pick '+(s[k]===x.id?'sel':'')+'" onclick="sel.'+k+'=\''+x.id+'\';'+(k==='dress'?'clearTopBottom();':'')+'drawOutfit()"><div class="pickphoto">'+pic(x,icon)+'</div><div class="pickname">'+esc(x.name)+'</div></button>'}).join('')+'</div>';if(s[k])html+='<button class="btn secondary" style="margin-top:6px;font-size:11px" onclick="sel.'+k+'=\'\';drawOutfit()">Clear selection</button>'}else{html+='<p class="muted">No '+title.toLowerCase()+' yet — add it in Wardrobe first.</p>'}return html}
+function addOther(){show(`<div class="sheettop"><h2>Add an essential</h2><button class="close" onclick="closeModal()">×</button></div><div class="field"><label>Item name</label><input id="on" placeholder="e.g. Sunscreen"></div><div class="row"><div class="field" style="flex:1"><label>Category</label><select id="oc2">${['Underwear','Toiletries','Documents','Electronics','Swimwear','Other'].map(x=>`<option>${x}</option>`).join('')}</select></div><div class="field" style="width:95px"><label>Quantity</label><input id="oq" type="number" min="1" value="1"></div></div><button class="btn primary" style="width:100%" onclick="saveOther()">Add to checklist</button>`)}
+function saveOther(){let n=document.getElementById('on').value.trim();if(!n)return alert('Enter an item name.');data.other.push({id:uid(),name:n,category:document.getElementById('oc2').value,qty:Math.max(1,+document.getElementById('oq').value||1),packed:false});save();closeModal();st.tab='other';renderApp();}
+
+function outfit(eid){let ex=eid?data.outfits.find(x=>x.id===eid):null,tops=data.items.filter(x=>x.category==='Top'),bots=data.items.filter(x=>['Bottom','Shorts'].includes(x.category)),dresses=data.items.filter(x=>x.category==='Dress'),shoes=data.items.filter(x=>x.category==='Shoes'),s={top:ex?.top||'',bottom:ex?.bottom||'',dress:ex?.dress||'',shoes:ex?.shoes||'',occasion:ex?.occasion||'day',name:ex?.name||''};window.sel=s;
+function clearTopBottom(){sel.top='';sel.bottom=''}
+function section(title,list,k,icon){let html='<div class="picktitle">'+title+'</div><p class="hint">'+(k==='dress'?'A dress replaces the top and bottom.':k==='shoes'?'Shoes are optional.':'Tap a photo to select a piece.')+'</p>';if(list.length){html+='<div class="pickgrid">'+list.map(function(x){return '<button class="pick '+(s[k]===x.id?'sel':'')+'" onclick="sel.'+k+'=\''+x.id+'\';'+(k==='dress'?'clearTopBottom();':'')+'drawOutfit()"><div class="pickphoto">'+pic(x,icon)+'</div><div class="pickname">'+esc(x.name)+'</div></button>'}).join('')+'</div>';if(s[k])html+='<button class="btn secondary" style="margin-top:6px;font-size:11px" onclick="sel.'+k+'=\'\';drawOutfit()">Clear selection</button>'}else{html+='<p class="muted">No '+title.toLowerCase()+' yet — add it in Wardrobe first.</p>'}return html}
 window.drawOutfit=()=>{let d=it(s.dress),parts=d?[d,null,it(s.shoes)]:[it(s.top),it(s.bottom),it(s.shoes)];show(`<div class="sheettop"><div><h2>${ex?'Edit your look':'Build an outfit'}</h2><div class="hint">Pick items visually, preview, then save.</div></div><button class="close" onclick="closeModal()">×</button></div><div class="field"><label>Outfit name</label><input id="outname" value="${esc(s.name)}" placeholder="e.g. Port Vila exploring"></div><div class="picktitle">What is this outfit for?</div><div class="chips">${['day','ashore','dinner','dressup'].map(o=>`<button class="chip ${s.occasion===o?'sel':''}" onclick="sel.occasion='${o}';drawOutfit()">${oi(o)}${ol(o)}</button>`).join('')}</div><div class="help"><strong>Need inspiration?</strong>Suggest outfit picks a random combination from your wardrobe. Shuffle tries another one. You can change pieces before saving.</div><div class="suggest"><button class="btn secondary" onclick="suggest()">✨ Suggest outfit</button><button class="btn secondary" onclick="suggest()">🔀 Shuffle</button></div><div class="preview"><b>Your look preview</b><div class="previewlook">${parts.map((x,i)=>`<div class="previewcell">${pic(x,['👕','👖','👟'][i])}</div>`).join('')}</div><div class="muted" style="margin-top:7px">${[d?.name,it(s.top)?.name,it(s.bottom)?.name,it(s.shoes)?.name].filter(Boolean).join(' · ')||'Selected pieces will appear here'}</div></div>${section('1. Tops',tops,'top','👕')}${section('2. Bottoms / shorts',bots,'bottom','👖')}${section('Or choose a dress',dresses,'dress','👗')}${section('3. Shoes (optional)',shoes,'shoes','👟')}<p class="footnote">The same item can appear in multiple looks, but only needs to be packed once.</p><button class="btn primary" style="width:100%;margin-top:12px" onclick="saveOutfit()">Save outfit</button>`)}
 window.suggest=()=>{if(!tops.length&&!bots.length&&!dresses.length&&!shoes.length)return alert('Add clothing to your wardrobe first.');s.dress='';s.top=tops.length?tops[Math.floor(Math.random()*tops.length)].id:'';s.bottom=bots.length?bots[Math.floor(Math.random()*bots.length)].id:'';s.shoes=shoes.length?shoes[Math.floor(Math.random()*shoes.length)].id:'';if(dresses.length&&Math.random()<.25){s.dress=dresses[Math.floor(Math.random()*dresses.length)].id;s.top='';s.bottom=''}drawOutfit()};
-window.saveOutfit=()=>{let n=document.getElementById('outname')?.value.trim()||ol(s.occasion)+' outfit';if(!s.dress&&(!s.top||!s.bottom))return alert('Choose a top and bottom, or choose a dress.');if(ex)Object.assign(ex,{name:n,occasion:s.occasion,top:s.top,bottom:s.bottom,dress:s.dress,shoes:s.shoes});else window.data.outfits.push({id:uid(),name:n,occasion:s.occasion,top:s.top,bottom:s.bottom,dress:s.dress,shoes:s.shoes,packed:false});save();closeModal();st.tab='outfits';window.renderApp()};drawOutfit()}
-function toggleItem(i){let x=it(i);x.packed=!x.packed;save();window.renderApp()}function delItem(i){if(confirm('Remove this wardrobe item?')){window.data.items=window.data.items.filter(x=>x.id!==i);save();window.renderApp()}}function toggleOther(i){let x=window.data.other.find(x=>x.id===i);x.packed=!x.packed;save();window.renderApp()}function delOther(i){if(confirm('Remove this item?')){window.data.other=window.data.other.filter(x=>x.id!==i);save();window.renderApp()}}function toggleOut(i){let x=window.data.outfits.find(x=>x.id===i);x.packed=!x.packed;save();window.renderApp()}function delOut(i){if(confirm('Delete this outfit?')){window.data.outfits=window.data.outfits.filter(x=>x.id!==i);save();window.renderApp()}}
-function listText(){let data=window.data;let s=`CRUISE PACKING LIST\n${data.cruise.name||'My Cruise'}\n\n`;['day','ashore','dinner','dressup'].forEach(o=>{let a=data.outfits.filter(x=>x.occasion===o);if(a.length){s+=ol(o).toUpperCase()+' OUTFITS\n';a.forEach(x=>s+=`- ${x.name}: ${[x.dress?it(x.dress)?.name:it(x.top)?.name,it(x.bottom)?.name,it(x.shoes)?.name].filter(Boolean).join(', ')}\n`);s+='\n'}});s+='CLOTHING / SHOES\n';data.items.forEach(x=>s+=`[${x.packed?'x':' '}] ${x.name} (${x.category})\n`);s+='\nESSENTIALS\n';data.other.forEach(x=>s+=`[${x.packed?'x':' '}] ${x.name} (${x.category}) x${x.qty||1}\n`);return s}function download(){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([listText()],{type:'text/plain'}));a.download='cruise-packing-list.txt';a.click()}async function copy(){try{await navigator.clipboard.writeText(listText());alert('Checklist copied.')}catch(e){alert('Use Download TXT if copy is unavailable.')}}
+window.saveOutfit=()=>{let n=document.getElementById('outname')?.value.trim()||ol(s.occasion)+' outfit';if(!s.dress&&(!s.top||!s.bottom))return alert('Choose a top and bottom, or choose a dress.');if(ex)Object.assign(ex,{name:n,occasion:s.occasion,top:s.top,bottom:s.bottom,dress:s.dress,shoes:s.shoes});else data.outfits.push({id:uid(),name:n,occasion:s.occasion,top:s.top,bottom:s.bottom,dress:s.dress,shoes:s.shoes,packed:false});save();closeModal();st.tab='outfits';renderApp();};drawOutfit()}
+
+function toggleItem(i){let x=it(i);x.packed=!x.packed;save();renderApp();}
+function delItem(i){if(confirm('Remove this wardrobe item?')){data.items=data.items.filter(x=>x.id!==i);save();renderApp();}}
+function toggleOther(i){let x=data.other.find(x=>x.id===i);x.packed=!x.packed;save();renderApp();}
+function delOther(i){if(confirm('Remove this item?')){data.other=data.other.filter(x=>x.id!==i);save();renderApp();}}
+function toggleOut(i){let x=data.outfits.find(x=>x.id===i);x.packed=!x.packed;save();renderApp();}
+function delOut(i){if(confirm('Delete this outfit?')){data.outfits=data.outfits.filter(x=>x.id!==i);save();renderApp();}}
+
+function listText(){let s=`CRUISE PACKING LIST\n${data.cruise.name||'My Cruise'}\n\n`;['day','ashore','dinner','dressup'].forEach(o=>{let a=data.outfits.filter(x=>x.occasion===o);if(a.length){s+=ol(o).toUpperCase()+' OUTFITS\n';a.forEach(x=>s+=`- ${x.name}: ${[x.dress?it(x.dress)?.name:it(x.top)?.name,it(x.bottom)?.name,it(x.shoes)?.name].filter(Boolean).join(', ')}\n`);s+='\n'}});s+='CLOTHING / SHOES\n';data.items.forEach(x=>s+=`[${x.packed?'x':' '}] ${x.name} (${x.category})\n`);s+='\nESSENTIALS\n';data.other.forEach(x=>s+=`[${x.packed?'x':' '}] ${x.name} (${x.category}) x${x.qty||1}\n`);return s}
+function download(){let a=document.createElement('a');a.href=URL.createObjectURL(new Blob([listText()],{type:'text/plain'}));a.download='cruise-packing-list.txt';a.click()}
+async function copy(){try{await navigator.clipboard.writeText(listText());alert('Checklist copied.')}catch(e){alert('Use Download TXT if copy is unavailable.')}}
 </script></body></html>
