@@ -41,53 +41,122 @@ function save(){
   }
 }
 
-auth.onAuthStateChanged(async user => {
-  currentUser = user;
-  if(user){
-    let docRef = db.collection('trips').doc(user.uid);
-    let doc = await docRef.get();
-    if(doc.exists){
-      data = doc.data() || {cruise:{name:'My Cruise'},items:[],outfits:[],other:[]};
-      localStorage.setItem(KEY, JSON.stringify(data));
-    } else {
-      let local = null;
-      try{ local = JSON.parse(localStorage.getItem(KEY)); }catch(e){}
-      if(local && typeof local === 'object'){
-        data = local;
-      }
-      await docRef.set(data);
-    }
-    renderApp();
-  } else {
-    renderLogin();
-  }
-});
+function defaultData(){
+  return {cruise:{name:'My Cruise'},items:[],outfits:[],other:[]};
+}
 
-function renderLogin(){
+function renderLogin(message=''){
   document.getElementById('app').innerHTML=`
-    <div style="max-width:400px;margin:60px auto;padding:20px;background:white;border:1px solid var(--line);border-radius:16px">
-      <h2>🧳 Cruise Packer Login</h2>
-      <p class="hint">Log in to sync your wardrobe and packing lists across your devices.</p>
-      <div class="field"><label>Email</label><input id="loginEmail" type="email" placeholder="traveller@example.com"></div>
-      <div class="field"><label>Password</label><input id="loginPass" type="password" placeholder="••••••••"></div>
-      <button class="btn primary" style="width:100%;margin-top:6px" onclick="doLogin()">Sign In / Register</button>
+    <div style="max-width:420px;margin:50px auto;padding:22px;background:white;border:1px solid var(--line);border-radius:16px;box-shadow:0 8px 30px #1422380d">
+      <div style="font-size:32px;margin-bottom:8px">🧳</div>
+      <h2 style="margin:0 0 6px">Cruise Packer</h2>
+      <p class="hint" style="margin:0 0 20px">Sign in to access your saved wardrobe, outfits and packing list.</p>
+      <form onsubmit="event.preventDefault();doLogin()">
+        <div class="field"><label for="loginEmail">Email address</label><input id="loginEmail" type="email" autocomplete="username" placeholder="you@example.com" required></div>
+        <div class="field"><label for="loginPass">Password</label><input id="loginPass" type="password" autocomplete="current-password" placeholder="Your password" required></div>
+        <p id="loginMessage" class="hint" role="status" aria-live="polite" style="min-height:18px;color:${message?'#b4232f':'var(--muted)'}">${esc(message)}</p>
+        <button id="loginButton" class="btn primary" type="submit" style="width:100%;margin-top:4px">Sign In</button>
+      </form>
+      <button class="btn secondary" type="button" onclick="resetLoginPassword()" style="width:100%;margin-top:8px">Forgot Password?</button>
+      <p class="hint" style="margin-top:16px">Use your existing account. New accounts cannot be created from this page.</p>
     </div>`;
 }
 
+function friendlyAuthError(error){
+  const messages={
+    'auth/invalid-email':'Please enter a valid email address.',
+    'auth/invalid-credential':'Email or password is incorrect.',
+    'auth/invalid-login-credentials':'Email or password is incorrect.',
+    'auth/wrong-password':'Email or password is incorrect.',
+    'auth/user-not-found':'No account was found for that email address.',
+    'auth/user-disabled':'This account has been disabled. Contact the app administrator.',
+    'auth/too-many-requests':'Too many attempts. Please wait a while and try again.',
+    'auth/network-request-failed':'Could not connect to Firebase. Check your internet connection.',
+    'auth/operation-not-allowed':'Email/password sign-in is not enabled in Firebase Authentication.',
+    'auth/unauthorized-domain':'This website is not authorised in Firebase. Add your GitHub Pages domain under Firebase Authentication → Settings → Authorized domains.',
+    'auth/api-key-not-valid.-please-pass-a-valid-api-key.':'Firebase rejected the API key. Check that the web app configuration matches the Firebase project.'
+  };
+  return messages[error.code] || `Unable to sign in (${error.code || 'unknown error'}). Please try again.`;
+}
+
 async function doLogin(){
-  let email=document.getElementById('loginEmail').value.trim();
-  let pass=document.getElementById('loginPass').value.trim();
-  if(!email||!pass){ alert('Enter email and password.'); return; }
+  const emailEl=document.getElementById('loginEmail');
+  const passEl=document.getElementById('loginPass');
+  const message=document.getElementById('loginMessage');
+  const button=document.getElementById('loginButton');
+  const email=emailEl?.value.trim()||'';
+  const pass=passEl?.value||'';
+  if(!email||!pass){ if(message) message.textContent='Enter your email address and password.'; return; }
+  if(button){button.disabled=true;button.textContent='Signing in…';}
+  if(message) message.textContent='';
   try{
-    await auth.signInWithEmailAndPassword(email, pass);
-  }catch(e){
-    try{
-      await auth.createUserWithEmailAndPassword(email, pass);
-    }catch(err){
-      alert('Login Error: ' + err.message);
-    }
+    // Sign-in only: deliberately do not create an account on failure.
+    await auth.signInWithEmailAndPassword(email,pass);
+  }catch(error){
+    console.error('Cruise Packer sign-in error:',error.code,error.message);
+    renderLogin(friendlyAuthError(error));
+    const newEmail=document.getElementById('loginEmail');
+    if(newEmail) newEmail.value=email;
+  }finally{
+    const currentButton=document.getElementById('loginButton');
+    if(currentButton){currentButton.disabled=false;currentButton.textContent='Sign In';}
   }
 }
+
+async function resetLoginPassword(){
+  const email=document.getElementById('loginEmail')?.value.trim()||'';
+  const message=document.getElementById('loginMessage');
+  if(!email){if(message) message.textContent='Enter your email address first.';return;}
+  try{
+    await auth.sendPasswordResetEmail(email);
+    if(message) message.textContent='If an account exists for this email, a password reset email has been sent.';
+  }catch(error){
+    console.error('Password reset error:',error.code,error.message);
+    if(message) message.textContent=friendlyAuthError(error);
+  }
+}
+
+let authInitialising=true;
+auth.onAuthStateChanged(async user => {
+  currentUser=user;
+  if(!user){
+    authInitialising=false;
+    renderLogin();
+    return;
+  }
+  try{
+    const docRef=db.collection('trips').doc(user.uid);
+    const doc=await docRef.get();
+    if(doc.exists){
+      const cloudData=doc.data()||{};
+      data={...defaultData(),...cloudData};
+      data.cruise=data.cruise||{name:'My Cruise'};
+      data.items=Array.isArray(data.items)?data.items:[];
+      data.outfits=Array.isArray(data.outfits)?data.outfits:[];
+      data.other=Array.isArray(data.other)?data.other:[];
+      try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){console.warn('Could not update local backup:',e);}
+    }else{
+      // Preserve this browser's existing packing data when setting up this account for the first time.
+      let local=null;
+      try{local=JSON.parse(localStorage.getItem(KEY));}catch(e){}
+      data=local&&typeof local==='object'?{...defaultData(),...local}:defaultData();
+      data.cruise=data.cruise||{name:'My Cruise'};
+      data.items=Array.isArray(data.items)?data.items:[];
+      data.outfits=Array.isArray(data.outfits)?data.outfits:[];
+      data.other=Array.isArray(data.other)?data.other:[];
+      await docRef.set(data);
+      try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){console.warn('Could not update local backup:',e);}
+    }
+    authInitialising=false;
+    renderApp();
+  }catch(error){
+    console.error('Could not load Cruise Packer cloud data:',error);
+    currentUser=null;
+    try{await auth.signOut();}catch(signOutError){console.error('Sign-out after load failure:',signOutError);}
+    authInitialising=false;
+    renderLogin('Signed in, but your saved data could not be loaded. Check your Firestore rules and internet connection, then try again.');
+  }
+});
 
 function logout(){ auth.signOut(); }
 
