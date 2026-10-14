@@ -25,6 +25,7 @@ const db = firebase.firestore();
 const KEY='cruisePackerV1';
 let data={cruise:{name:'My Cruise'},items:[],outfits:[],other:[]};
 let currentUser=null;
+let cloudReady=false;
 let st={tab:'outfits',q:'',cat:'All',oq:'',oc:'All',modal:null};
 
 const uid=()=>Date.now().toString(36)+Math.random().toString(36).slice(2,7);
@@ -35,14 +36,54 @@ const ol=o=>({day:'Day',ashore:'Ashore',dinner:'Dinner',dressup:'Dress up'})[o]|
 const oi=o=>({day:'☀️',ashore:'🏝️',dinner:'🍽️',dressup:'✨'})[o]||'👕';
 
 function save(){
-  try{ localStorage.setItem(KEY,JSON.stringify(data)); }catch(e){}
-  if(currentUser){
+  // Always keep the browser copy, but never write to Firebase until its data has loaded successfully.
+  try{ localStorage.setItem(KEY,JSON.stringify(data)); }
+  catch(e){ console.warn('Could not save the local backup:',e); }
+  if(currentUser && cloudReady){
     db.collection('trips').doc(currentUser.uid).set(data).catch(err=>console.error('Cloud sync error:',err));
   }
 }
 
 function defaultData(){
   return {cruise:{name:'My Cruise'},items:[],outfits:[],other:[]};
+}
+
+function readLocalData(){
+  try{
+    const saved=JSON.parse(localStorage.getItem(KEY)||'null');
+    return saved && typeof saved==='object' ? saved : null;
+  }catch(e){ return null; }
+}
+
+function mergeRecords(localRecords, cloudRecords){
+  const local=Array.isArray(localRecords)?localRecords:[];
+  const cloud=Array.isArray(cloudRecords)?cloudRecords:[];
+  const merged=new Map();
+  // Keep cloud versions of matching records, but retain records that only exist locally.
+  for(const item of local){
+    if(item && typeof item==='object') merged.set(item.id ?? JSON.stringify(item),item);
+  }
+  for(const item of cloud){
+    if(!item || typeof item!=='object') continue;
+    const key=item.id ?? JSON.stringify(item);
+    const previous=merged.get(key);
+    merged.set(key, previous ? {...previous,...item, photo:item.photo || previous.photo || ''} : item);
+  }
+  return [...merged.values()];
+}
+
+function combineSavedData(localData, cloudData){
+  const local=localData && typeof localData==='object'?localData:defaultData();
+  const cloud=cloudData && typeof cloudData==='object'?cloudData:defaultData();
+  return {
+    ...defaultData(),
+    ...local,
+    ...cloud,
+    cruise: {...(local.cruise||{}), ...(cloud.cruise||{})},
+    items: mergeRecords(local.items,cloud.items),
+    outfits: mergeRecords(local.outfits,cloud.outfits),
+    other: mergeRecords(local.other,cloud.other)
+  };
 }
 
 function renderLogin(message=''){
@@ -119,6 +160,7 @@ async function resetLoginPassword(){
 let authInitialising=true;
 auth.onAuthStateChanged(async user => {
   currentUser=user;
+  cloudReady=false;
   if(!user){
     authInitialising=false;
     renderLogin();
@@ -127,34 +169,29 @@ auth.onAuthStateChanged(async user => {
   try{
     const docRef=db.collection('trips').doc(user.uid);
     const doc=await docRef.get();
+    const localData=readLocalData();
     if(doc.exists){
-      const cloudData=doc.data()||{};
-      data={...defaultData(),...cloudData};
-      data.cruise=data.cruise||{name:'My Cruise'};
-      data.items=Array.isArray(data.items)?data.items:[];
-      data.outfits=Array.isArray(data.outfits)?data.outfits:[];
-      data.other=Array.isArray(data.other)?data.other:[];
-      try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){console.warn('Could not update local backup:',e);}
-    }else{
-      // Preserve this browser's existing packing data when setting up this account for the first time.
-      let local=null;
-      try{local=JSON.parse(localStorage.getItem(KEY));}catch(e){}
-      data=local&&typeof local==='object'?{...defaultData(),...local}:defaultData();
-      data.cruise=data.cruise||{name:'My Cruise'};
-      data.items=Array.isArray(data.items)?data.items:[];
-      data.outfits=Array.isArray(data.outfits)?data.outfits:[];
-      data.other=Array.isArray(data.other)?data.other:[];
+      // Merge instead of replacing local data with the cloud document. This prevents an empty
+      // cloud array from silently erasing locally saved outfits/items/photos.
+      data=combineSavedData(localData,doc.data()||{});
+      // Persist the merged result only after the Firestore read succeeded.
       await docRef.set(data);
-      try{localStorage.setItem(KEY,JSON.stringify(data));}catch(e){console.warn('Could not update local backup:',e);}
+    }else{
+      // A new cloud document starts with this browser's saved data, if any.
+      data=combineSavedData(localData,defaultData());
+      await docRef.set(data);
     }
+    try{localStorage.setItem(KEY,JSON.stringify(data));}
+    catch(e){console.warn('Could not update the local backup:',e);}
+    cloudReady=true;
     authInitialising=false;
     renderApp();
   }catch(error){
-    console.error('Could not load Cruise Packer cloud data:',error);
-    currentUser=null;
-    try{await auth.signOut();}catch(signOutError){console.error('Sign-out after load failure:',signOutError);}
+    // Do not sign the user out or write defaults after a read/sync failure.
+    cloudReady=false;
     authInitialising=false;
-    renderLogin('Signed in, but your saved data could not be loaded. Check your Firestore rules and internet connection, then try again.');
+    console.error('Could not safely load Cruise Packer cloud data:',error);
+    renderLogin('Your account is signed in, but the saved data could not be safely synced. No cloud data was overwritten. Check your connection and Firestore permissions, then refresh and try again.');
   }
 });
 
